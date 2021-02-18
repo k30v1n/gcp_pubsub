@@ -1,0 +1,1 @@
+python cloud-client/subscriber.py %1 receive %2

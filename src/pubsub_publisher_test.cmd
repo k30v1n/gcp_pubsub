@@ -1,0 +1,1 @@
+python cloud-client/publisher.py %1 publish %2
