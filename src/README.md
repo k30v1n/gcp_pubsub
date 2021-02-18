@@ -22,7 +22,7 @@ Those instructions were based on https://cloud.google.com/pubsub/docs/emulator
 The configuration is done now.
 
 ## Running and setting up new topic and its subscription
-These scripts are locaded on the `pubsub-local/` directory, so its recommended to run those on this directory.
+These scripts are locaded on the `src/` directory, so its recommended to run those on this directory.
 
 > **IMPORTANT NOTE**: Every time you shut down your pubsub emulator all topics and subscriptions are DELETED from your environment. So its higly recommended to try to automate its initialization with the variables that you need.
 
@@ -33,9 +33,9 @@ These scripts are locaded on the `pubsub-local/` directory, so its recommended t
 
 1. To run the following commands we'll be using a python customized [client API](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/master/pubsub/cloud-client). But before that:
     
-    - navigate to `pubsub-local/cloud-client/`
+    - navigate to `src/cloud-client/`
     - run `pip install -r requirements.txt`
-    - get back to `pubsub-local/`
+    - get back to `src/`
 1. Now with the pubsub running start another CMD window and create a new topic and a subscriber for it
 
     `pubsub_create [PROJECT_ID] [PUBLISHER_TOPIC_ID] [SUBSCRIBER_TOPIC_ID]`
@@ -44,7 +44,7 @@ These scripts are locaded on the `pubsub-local/` directory, so its recommended t
     - `[SUBSCRIBER_TOPIC_ID]`: The subscriber topic ID that will be created locally to the previous publisher. Example: `local.1.0.testing`
 
 ## Testing it
-These scripts are locaded on the `pubsub-local/` directory, so its recommended to run those on this directory.
+These scripts are locaded on the `src/` directory, so its recommended to run those on this directory.
 
 1. Now that pubsub emulator is running and topics and subscribers were created, lets listen to the subscriber:
 
