@@ -10,7 +10,7 @@ Those instructions were based on https://cloud.google.com/pubsub/docs/emulator
 1. Install the latest versions of Python 2 and 3 ([Python Website](https://www.python.org/downloads/windows/))
     - When you install each version, make sure you select the Add Python to PATH option for both versions. If you didn't do this, you need to add Python's installation directory and the Scripts folder to your path, for example: C:\Python27\;C:\Python27\Scripts\.
 1. Install [Google CLoud SDK](https://cloud.google.com/sdk/docs/). GCP SDK contains the gcloud command-line tool.
-1. It will prompt to you authenticate, do it with your questrade account, or run the following. Don't worry, if you are a developer you will not have permission to messup anything on the real GCP server :)
+1. It will prompt to you authenticate.
 
     `gcloud auth login`
 1. Install pubsub emulator:
