@@ -1,3 +1,6 @@
+# WIP
+docker support is still WORK IN PROGRESS
+
 # gcp-tools
 
 GCP Tools, including tools to run pubsub emulator locally
