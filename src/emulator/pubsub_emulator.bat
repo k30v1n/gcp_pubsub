@@ -1,1 +1,0 @@
-docker run --rm -ti -p 8681:8681 -e PUBSUB_PROJECT1=qt-local-emulator,topic.name:subscriber.name messagebird/gcloud-pubsub-emulator:latest

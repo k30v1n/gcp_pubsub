@@ -1,1 +1,0 @@
-gcloud beta emulators pubsub start --project=%1
