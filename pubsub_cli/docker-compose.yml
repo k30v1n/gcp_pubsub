@@ -7,3 +7,5 @@ services:
     stdin_open: true
     environment: 
       - PUBSUB_PROJECT=qt-local-emulator
+      - PUBSUB_TOPIC=topic.name
+      - PUBSUB_EMULATOR_HOST=localhost:8681

@@ -23,6 +23,7 @@ at https://cloud.google.com/pubsub/docs.
 
 import argparse
 import os
+import sys
 
 def list_topics(project_id):
     """Lists all Pub/Sub topics in the given project."""
@@ -81,15 +82,20 @@ def publish_messages(project_id, topic_name):
     # [START pubsub_publish]
     from google.cloud import pubsub_v1
 
+    print("publish_messages(project_id, topic_name)")
+
     # TODO project_id = "Your Google Cloud Project ID"
     # TODO topic_name = "Your Pub/Sub topic name"
 
     publisher = pubsub_v1.PublisherClient()
+    print("client created.")
     # The `topic_path` method creates a fully qualified identifier
     # in the form `projects/{project_id}/topics/{topic_name}`
     topic_path = publisher.topic_path(project_id, topic_name)
+    print("topic set.")
 
     for n in range(1, 10):
+        print("publishing message...", n)
         data = u'Message number {}'.format(n)
         # Data must be a bytestring
         data = data.encode('utf-8')
@@ -305,82 +311,78 @@ if __name__ == "__main__":
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
-    parser.add_argument('project_id', help='Your Google Cloud project ID')
 
-    subparsers = parser.add_subparsers(dest='command')
-    subparsers.add_parser('list', help=list_topics.__doc__)
+    print('PUBSUB_EMULATOR_HOST set to:', os.environ.get('PUBSUB_EMULATOR_HOST'))
+    print('PUBSUB_PROJECT set to:', os.environ.get('PUBSUB_PROJECT'))
+    print('PUBSUB_TOPIC set to:', os.environ.get('PUBSUB_TOPIC'))
 
-    create_parser = subparsers.add_parser('create',
-                                          help=create_topic.__doc__)
-    create_parser.add_argument('topic_name')
+    project_id = os.environ.get('PUBSUB_PROJECT')
+    #parser.add_argument('project_id', help='Your Google Cloud project ID')
 
-    delete_parser = subparsers.add_parser('delete',
-                                          help=delete_topic.__doc__)
-    delete_parser.add_argument('topic_name')
+    # subparsers = parser.add_subparsers(dest='command')
 
-    publish_parser = subparsers.add_parser('publish',
-                                           help=publish_messages.__doc__)
-    publish_parser.add_argument('topic_name')
+    # publish_parser = subparsers.add_parser('publish',
+    #                                        help=publish_messages.__doc__)
+    # publish_parser.add_argument('topic_name')
 
-    publish_with_custom_attributes_parser = subparsers.add_parser(
-        'publish-with-custom-attributes',
-        help=publish_messages_with_custom_attributes.__doc__,
-    )
-    publish_with_custom_attributes_parser.add_argument('topic_name')
+    # publish_msg = subparsers.add_parser(
+    #     'publish-msg',
+    #     help=publish_message.__doc__
+    # )
 
-    publish_with_futures_parser = subparsers.add_parser(
-        'publish-with-futures', help=publish_messages_with_futures.__doc__
-    )
-    publish_with_futures_parser.add_argument('topic_name')
-
-    publish_with_error_handler_parser = subparsers.add_parser(
-        'publish-with-error-handler',
-        help=publish_messages_with_error_handler.__doc__
-    )
-    publish_with_error_handler_parser.add_argument('topic_name')
-
-    publish_with_batch_settings_parser = subparsers.add_parser(
-        'publish-with-batch-settings',
-        help=publish_messages_with_batch_settings.__doc__
-    )
-    publish_with_batch_settings_parser.add_argument('topic_name')
-
-    publish_with_retry_settings_parser = subparsers.add_parser(
-        'publish-with-retry-settings',
-        help=publish_messages_with_retry_settings.__doc__
-    )
-    publish_with_retry_settings_parser.add_argument('topic_name')
-
-    publish_msg = subparsers.add_parser(
-        'publish-msg',
-        help=publish_message.__doc__
-    )
-    publish_msg.add_argument('topic_name')
-    publish_msg.add_argument('message')
+    parser.add_argument('--message', required=False)
+    parser.add_argument('-m', required=False)
+    parser.add_argument('--topic', required=False)
+    parser.add_argument('-t', required=False)
 
     args = parser.parse_args()
 
-    os.environ['PUBSUB_EMULATOR_HOST'] = "localhost:8085"
-    print('On this process the emulator host was set to:', os.environ.get('PUBSUB_EMULATOR_HOST'))
+    # Get topic value
+    topic = None
+    if args.topic != None:
+        topic = args.topic
+    elif args.t != None:
+        topic = args.t
+    elif os.environ.get('PUBSUB_TOPIC') != None:
+        topic = os.environ.get('PUBSUB_TOPIC')
+    else:
+        sys.exit("topic should be provided or configured globally with PUBSUB_TOPIC")
 
-    if args.command == 'list':
-        list_topics(args.project_id)
-    elif args.command == 'create':
-        create_topic(args.project_id, args.topic_name)
-    elif args.command == 'delete':
-        delete_topic(args.project_id, args.topic_name)
-    elif args.command == 'publish':
-        publish_messages(args.project_id, args.topic_name)
-    elif args.command == 'publish-msg':
-        publish_message(args.project_id, args.topic_name, args.message)
-    elif args.command == 'publish-with-custom-attributes':
-        publish_messages_with_custom_attributes(args.project_id,
-                                                args.topic_name)
-    elif args.command == 'publish-with-futures':
-        publish_messages_with_futures(args.project_id, args.topic_name)
-    elif args.command == 'publish-with-error-handler':
-        publish_messages_with_error_handler(args.project_id, args.topic_name)
-    elif args.command == 'publish-with-batch-settings':
-        publish_messages_with_batch_settings(args.project_id, args.topic_name)
-    elif args.command == 'publish-with-retry-settings':
-        publish_messages_with_retry_settings(args.project_id, args.topic_name)
+    print("TOPIC set to", topic)
+
+    # Get message content
+    message = None
+    if args.message != None:
+        message = args.message
+    elif args.m != None:
+        message = args.m
+
+    print('MESSAGE set to', message)
+
+    if message != None:
+        publish_message(project_id, topic, message)
+    else:
+        publish_messages(project_id, topic)
+
+    print('end of the script')
+
+    # if args.command == 'list':
+    #     list_topics(project_id)
+    # elif args.command == 'create':
+    #     create_topic(project_id, args.topic)
+    # elif args.command == 'delete':
+    #     delete_topic(project_id, args.topic_name)
+    # elif args.command == 'publish':
+    #     publish_messages(project_id, args.topic_name)
+    # elif args.command == 'publish-msg':
+    #     publish_message(project_id, args.topic_name, args.message)
+    # elif args.command == 'publish-with-custom-attributes':
+    #     publish_messages_with_custom_attributes(project_id, args.topic_name)
+    # elif args.command == 'publish-with-futures':
+    #     publish_messages_with_futures(project_id, args.topic_name)
+    # elif args.command == 'publish-with-error-handler':
+    #     publish_messages_with_error_handler(project_id, args.topic_name)
+    # elif args.command == 'publish-with-batch-settings':
+    #     publish_messages_with_batch_settings(project_id, args.topic_name)
+    # elif args.command == 'publish-with-retry-settings':
+    #     publish_messages_with_retry_settings(project_id, args.topic_name)
