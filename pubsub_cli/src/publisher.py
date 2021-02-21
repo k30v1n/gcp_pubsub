@@ -82,7 +82,7 @@ def publish_messages(project_id, topic_name):
     # [START pubsub_publish]
     from google.cloud import pubsub_v1
 
-    print("publish_messages(project_id, topic_name)")
+    print("publish_messages(project_id, topic_name)", project_id, topic_name)
 
     # TODO project_id = "Your Google Cloud Project ID"
     # TODO topic_name = "Your Pub/Sub topic name"
@@ -92,7 +92,7 @@ def publish_messages(project_id, topic_name):
     # The `topic_path` method creates a fully qualified identifier
     # in the form `projects/{project_id}/topics/{topic_name}`
     topic_path = publisher.topic_path(project_id, topic_name)
-    print("topic set.")
+    print("topic set to", topic_path)
 
     for n in range(1, 10):
         print("publishing message...", n)
@@ -348,8 +348,6 @@ if __name__ == "__main__":
     else:
         sys.exit("topic should be provided or configured globally with PUBSUB_TOPIC")
 
-    print("TOPIC set to", topic)
-
     # Get message content
     message = None
     if args.message != None:
@@ -357,7 +355,9 @@ if __name__ == "__main__":
     elif args.m != None:
         message = args.m
 
-    print('MESSAGE set to', message)
+    print("'project_id' set to", project_id)
+    print("'topic' set to", topic)
+    print("'message' set to", message)
 
     if message != None:
         publish_message(project_id, topic, message)
