@@ -8,7 +8,7 @@ services:
     volumes: 
       - ./pubsub_cli/src:/home/app_user
     environment: 
-      - PUBSUB_PROJECT=qt-local-emulator
+      - PUBSUB_PROJECT=local-gcp-emulator
       - PUBSUB_TOPIC=local.topic.name
       - PUBSUB_EMULATOR_HOST=http://pubsub_emulator:8681
   pubsub_emulator:
@@ -17,4 +17,4 @@ services:
     ports: 
       - 8681:8681
     environment: 
-      - PUBSUB_PROJECT1=qt-local-emulator,local.topic.name:local.subscriber.name
+      - PUBSUB_PROJECT1=local-gcp-emulator,local.topic.name:local.subscriber.name
