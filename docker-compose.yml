@@ -1,0 +1,20 @@
+version: "3.8"
+services: 
+  pubsub_cli:
+    container_name: pubsub_cli
+    build: ./pubsub_cli/
+    tty: true
+    stdin_open: true
+    volumes: 
+      - ./pubsub_cli/src:/home/app_user
+    environment: 
+      - PUBSUB_PROJECT=qt-local-emulator
+      - PUBSUB_TOPIC=local.topic.name
+      - PUBSUB_EMULATOR_HOST=http://pubsub_emulator:8681
+  pubsub_emulator:
+    container_name: pubsub_emulator
+    image: messagebird/gcloud-pubsub-emulator:latest
+    ports: 
+      - 8681:8681
+    environment: 
+      - PUBSUB_PROJECT1=qt-local-emulator,local.topic.name:local.subscriber.name
