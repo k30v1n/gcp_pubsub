@@ -7,7 +7,7 @@ services:
     stdin_open: true
     volumes: 
       - ./pubsub_cli/src:/home/app_user
-    environment: 
+    environment:
       - PUBSUB_PROJECT=local-gcp-emulator
       - PUBSUB_TOPIC=local.topic.name
       - PUBSUB_EMULATOR_HOST=http://pubsub_emulator:8681
