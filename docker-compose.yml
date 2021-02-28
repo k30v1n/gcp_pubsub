@@ -14,7 +14,7 @@ services:
   pubsub_emulator:
     container_name: pubsub_emulator
     image: messagebird/gcloud-pubsub-emulator:latest
-    ports: 
+    ports:
       - 8681:8681
     environment:
       - PUBSUB_PROJECT1=local-gcp-emulator,local.topic.name:local.subscriber.name
